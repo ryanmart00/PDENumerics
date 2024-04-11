@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage[tmargin=1.25in,lmargin=.25in,rmargin=1in,bmargin=1in,paper=letterpaper]{geometry}
+\usepackage{amsmath,amssymb, amsfonts}
+\usepackage{multirow, color}
+\usepackage{mathrsfs} % for \mathscr{S}
+\usepackage{fancyhdr,ifthen,lastpage}
+\usepackage[utf8]{inputenc}
+\usepackage{textgreek}
+\usepackage{verbatim}
+% Begin My Stuff {{{
+\usepackage{ifthen}
+\usepackage{amsfonts}
+
+\usepackage{tikz}
+\usetikzlibrary{calc,shapes}
+\usetikzlibrary{decorations.markings,arrows,positioning}
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
+\usepackage{xparse}
+\usepackage{cancel}
+
+\usepackage{etoolbox}
+\newcounter{tikzmarkcounter}
+
+\let\bb\mathbb
+\def\Re{\text{Re}}
+\def\Im{\text{Im}}
+\def\tr{\text{tr}}
+\def\Id{\text{Id}}
+\def\supp{\text{supp }}
+\def\sgn{\text{sgn}}
+\def\O{\mathcal O}
+\let\p\partial
+
+\newcommand{\prob}{ \hfill \tikzmark{br\thetikzmarkcounter}
+    \tikz[overlay,remember picture]{\draw[black]
+    ($(bl\thetikzmarkcounter)+(-0.2em,1.6em)$) rectangle
+    ($(br\thetikzmarkcounter)+(1.0em,-0.9em)$);}
+    \refstepcounter{tikzmarkcounter}~\newline}
+
+\makeatletter
+\let\latexitem\item
+\NewDocumentCommand{\problemitem}{o}{%
+  \IfValueT{#1}{\latexitem[\tikzmark{bl\thetikzmarkcounter}\formatproblem{#1}] }%
+  \IfNoValueT{#1}{\ifthenelse{\@enumdepth=1}{\stepcounter{enumi}
+    \latexitem[\tikzmark{bl\thetikzmarkcounter}\formatproblem{\letter\arabic{enumi}}]}
+    {\stepcounter{enumii} \latexitem[\tikzmark{bl\thetikzmarkcounter} (\alph{enumii})]}}
+}
+\makeatother
+\NewDocumentCommand{\formatproblem}{m}{\textbf{#1:}}
+\NewDocumentEnvironment{problems}{O{}}
+ {\begin{enumerate}}
+ {\end{enumerate}}
+
+\newcommand{\diff}[2][]{\mathop{\frac{d #1}{d #2}} }
+\newcommand{\pdiff}[2][]{\mathop{\frac{\partial #1}{\partial #2}} }
+\newcommand{\conj}[1]{\mathop{\overline{#1}} }
+\newcommand{\abs}[1]{{\mathop{\left\lvert #1 \right\rvert}} }
+\newcommand{\norm}[1]{{\mathop{\left\lvert\left\lvert #1 \right\rvert\right\rvert}} }
+\newcommand{\col}[1]{\left[ \begin{array}{c} #1 \end{array} \right]}
+\newcommand{\bemph}[1]{\textbf{\textit{#1}} }
+\usepackage{scalerel,stackengine}
+\stackMath
+\newcommand\what[1]{%
+\savestack{\tmpbox}{\stretchto{%
+  \scaleto{%
+    \scalerel*[\widthof{\ensuremath{#1}}]{\kern.1pt\mathchar"0362\kern.1pt}%
+    {\rule{0ex}{\textheight}}%WIDTH-LIMITED CIRCUMFLEX
+  }{\textheight}%
+}{2.4ex}}%
+\stackon[-6.9pt]{#1}{\tmpbox}%
+}
+
+
+% End My Stuff
+% }}}
+\def\Div{\text{div}}
+\let\div\Div
+
+\def\Vol{\text{Vol}}
+
+\begin{document}
+\pagestyle{fancy}
+
+%% HEADER %%
+\lhead{ Math 228B - Spring \the\year}
+\rhead{Ryan Martinez}
+\chead{\bf Homework 4 }
+
+%% FOOTER %%
+\lfoot{} 
+\rfoot{}
+\cfoot{}
+
+\begin{center}
+ {\Large\bf Math 228B: Homework 4}
+\end{center}
+
+~
+
+\begin{problems}
+    \problemitem[1a] Derive the Galerkin formulation of 
+    $$\partial^4_x u = 480x - 120$$
+    $$u(0)= u'(0) = u(1) = u'(1) = 0$$
+\prob
+
+If there was a function $u$ defined on $[0,1]$ which satisfies the above PDE 
+then it must be the case that for any function $\phi$ with 
+$\phi(0) = \phi'(0) = \phi(1) = \phi'(1) = 0$ that 
+$$\int_0^1 \partial^4_x u \phi dx = \int_0^1 f \phi dx$$
+Integrating by parts twice we must also have 
+$$\int_0^1 \partial^2_x u \partial^2_x \phi dx 
++ \partial^3 u \phi|_0^1 - \partial^2_x u \partial_x \phi|_0^1= \int_0^1 f \phi dx$$
+but since we chose $\phi$ to be 0 to first order on the boundaries this is 
+$$\int_0^1 \partial^2_x u \partial^2_x \phi dx = \int_0^1 f \phi dx.$$
+Now, this will determine $u$ uniquely if we check this against enough $\phi$ so that 
+$\partial^2 \phi$ span a dense subspace of the image of $\partial^2_x u$ on the space 
+we look for a solution $u$, \emph{as long as $\partial^2_x$ is }
+
+\end{problems}
+\end{document}
